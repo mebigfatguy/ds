@@ -1,0 +1,122 @@
+<!--
+/*
+ * ds - a descriptive swing library
+ * Copyright (C) 2014 Dave Brosius
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+ -->
+
+<project name="ds" default="info">
+    
+    <property file="build.properties"/>
+    <property file="version.properties"/>
+    
+    <property name="src.dir" value="${basedir}/src"/>
+	<property name="target.dir" value="${basedir}/target"/>
+    <property name="classes.dir" value="${target.dir}/classes"/>
+    <property name="lib.dir" value="${basedir}/lib"/>
+    <property name="javadoc.dir" value="${target.dir}/javadoc"/>
+    <property name="javac.source" value="1.7"/>
+    <property name="javac.target" value="1.7"/>
+    <property name="javac.deprecation" value="on"/>
+    <property name="javac.debug" value="on"/>
+    
+    <property name="ds.version" value="0.1.0"/>
+
+    <target name="clean" description="removes all generated collateral">
+        <delete dir="${target.dir}"/>
+    </target>
+    
+    <path id="ds.classpath">
+    </path>
+    
+    <target name="info">
+        <echo message="ds - a descriptive swing library"/>
+        <echo message=""/>
+        <echo message="    this project uses yank (https://github.com/mebigfatguy/yank) for dependency management"/>
+        <echo message="    download yank.jar and place in ant/lib directory"/>
+        <echo message="    http://search.maven.org/#artifactdetails%7Ccom.mebigfatguy.yank%7Cyank%7C0.4.2%7Cjar"/>
+    </target>
+    
+   <target name="yank" xmlns:yank="antlib:com.mebigfatguy.yank">
+        <mkdir dir="${lib.dir}"/>
+        <yank:yank yankFile="${basedir}/yank.xls" destination="${lib.dir}" source="true">
+            <server url="http://jcenter.bintray.com"/>
+            <generateVersions propertyFileName="${basedir}/version.properties" />
+        </yank:yank>
+    </target>
+    
+    <target name="-init" depends="yank" description="prepares repository for a build">
+        <mkdir dir="${lib.dir}"/>
+        <mkdir dir="${target.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${javadoc.dir}"/>
+    </target>
+
+    <target name="compile" depends="-init, yank" description="compiles java files">
+        <javac srcdir="${src.dir}"
+                destdir="${classes.dir}"
+                source="${javac.source}"
+                target="${javac.target}"
+                deprecation="${javac.deprecation}"
+                debug="${javac.debug}"
+                includeantruntime="false">
+            <classpath refid="ds.classpath"/>
+        </javac>
+    </target>
+    
+    <target name="resources" depends="-init" description="copies required files">
+        <copy todir="${classes.dir}">
+            <fileset dir="${src.dir}">
+                <include name="**/*.xsd"/>
+            </fileset>
+        </copy>
+     </target>
+    
+    <target name="jar" depends="compile, resources" description="produces the ds jar file">
+        <jar destfile="${target.dir}/ds-${ds.version}.jar">
+            <fileset dir="${classes.dir}">
+                <include name="**/*.class"/>
+                <include name="**/*.xsd"/>
+            </fileset>
+            <manifest>
+                <attribute name="ds-version" value="${ds.version}"/>
+            </manifest>
+        </jar>  
+    </target>
+    
+    <target name="srczip" description="builds the source distribution zip file">
+        <zip destfile="${basedir}/ds-${ds.version}-sources.zip" 
+             basedir="${basedir}"
+             includes="src/**/*.java, src/**/*.xsd, test/**/*.java, test/**/*.xml"/>
+    </target>
+    
+    <target name="javadoc" depends="-init" description="build the javadoc for the project">
+        <javadoc packagenames="com.mebigfatguy.*"
+                 sourcepath="${src.dir}"
+                 classpathref="ds.classpath"
+                 destdir="${javadoc.dir}"
+                 windowtitle="ds api">
+            <doctitle><![CDATA[<h1>ds javadoc</h1>]]></doctitle>
+            <bottom><![CDATA[<i>Copyright &#169; 2013 MeBigFatGuy.com. All Rights Reserved.</i>]]></bottom>
+        </javadoc>
+    </target>
+    
+    <target name="build" depends="clean, -init, compile, resources, jar" description="builds the ds jar"/>
+    
+    <target name="release" depends="jar, srczip, javadoc" description="prepares everything for a release"/>
+
+</project>
