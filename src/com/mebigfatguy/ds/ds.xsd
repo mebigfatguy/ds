@@ -1,8 +1,10 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
-    <xsd:element name="view" type="ViewType"/>
+    <xsd:element name="container" type="ContainerType"/>
     
-    <xsd:complexType name="ViewType">
+    <xsd:complexType name=""ContainerType"">
+        <xsd:attribute name="type" type="xsd:string"/>
+        <xsd:attribute name="name" type="xsd:string" optional="true"/>
     </xsd:complexType>
 
 </xsd:schema>

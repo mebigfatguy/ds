@@ -26,6 +26,7 @@ public class DSFactory {
                 SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
                 schema = schemaFactory.newSchema(source);
                 SPF.setValidating(true);
+                SPF.setNamespaceAware(true);
                 SPF.setSchema(schema);
             } catch (Exception e) {
             }

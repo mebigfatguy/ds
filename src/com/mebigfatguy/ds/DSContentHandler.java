@@ -14,6 +14,12 @@ import javax.swing.RootPaneContainer;
 
 public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandler {
 
+    private static final String CONTAINER = "container";
+    private static final String CONTROL = "control";
+    
+    private static final String ATTR_NAME = "name";
+    private static final String ATTR_TYPE = "type";
+    
     private DSLocalizer localizer;
     private RootPaneContainer window;
     private List<Container> containerStack = new ArrayList<>();
@@ -38,10 +44,31 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+        Container c;
+        try {
+            if (localName.equals(CONTAINER)) {
+                if (containerStack.isEmpty()) {
+                    c = (Container) window;
+                } else {
+                    String type = attributes.getValue(ATTR_TYPE);
+                    Class<?> cls = Class.forName(type);
+                    c = (Container) cls.newInstance(); 
+                }
+                containerStack.add(c);
+            } else if (localName.equals(CONTROL)) {
+                
+            }
+            
+        } catch (Exception e) {
+            //what to do?
+        }
     }
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
+        if (localName.equals(CONTAINER)) {
+            containerStack.remove(containerStack.size() - 1);
+        }
     }
 
     @Override
