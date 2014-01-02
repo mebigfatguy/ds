@@ -2,9 +2,16 @@
 
     <xsd:element name="container" type="ContainerType"/>
     
-    <xsd:complexType name=""ContainerType"">
-        <xsd:attribute name="type" type="xsd:string"/>
-        <xsd:attribute name="name" type="xsd:string" optional="true"/>
+    <xsd:complexType name="ContainerType">
+        <xsd:attribute name="type" type="ClassType"/>
+        <xsd:attribute name="name" type="xsd:string" use="optional"/>
+        <xsd:attribute name="layout" type="ClassType"/>
     </xsd:complexType>
+    
+    <xsd:simpleType name="ClassType">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_])*"/>
+        </xsd:restriction>
+    </xsd:simpleType>
 
 </xsd:schema>

@@ -20,22 +20,22 @@ public class DSFactory {
     static {
         try {
             SPF = SAXParserFactory.newInstance();
-            Schema schema = null;
             try {
                 SAXSource source = new SAXSource(new InputSource(DSFactory.class.getResourceAsStream("/com/mebigfatguy/ds/ds.xsd")));
                 SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-                schema = schemaFactory.newSchema(source);
+                Schema schema = schemaFactory.newSchema(source);
                 SPF.setValidating(true);
                 SPF.setNamespaceAware(true);
                 SPF.setSchema(schema);
             } catch (Exception e) {
+                e.printStackTrace();
             }
         } catch (Exception e) {
             throw new NoClassDefFoundError("Failed to initialize DSFactory's sax parser");
         }
     }
     
-    public static <T extends RootPaneContainer> T getView(String name, DSTypeReference<T> typeRef, DSLocalizer localizer) throws DSException {
+    public static <T extends RootPaneContainer> T getView(String name, DSLocalizer localizer) throws DSException {
         
         DSErrorHandler eh = null;
         try (BufferedInputStream bis = new BufferedInputStream(DSFactory.class.getResourceAsStream(name))) {
@@ -43,7 +43,7 @@ public class DSFactory {
             SAXParser saxParser = SPF.newSAXParser();
             XMLReader r = saxParser.getXMLReader();
 
-            DSContentHandler<T> ch = new DSContentHandler<T>(typeRef, localizer);
+            DSContentHandler<T> ch = new DSContentHandler<T>(localizer);
             r.setContentHandler(ch);
             eh = new DSErrorHandler();
             r.setErrorHandler(eh);

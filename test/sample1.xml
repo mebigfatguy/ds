@@ -1,4 +1,4 @@
 
-<container name="title">
+<container name="title" type="javax.swing.JFrame" layout="java.awt.BorderLayout">
     
 </container>
