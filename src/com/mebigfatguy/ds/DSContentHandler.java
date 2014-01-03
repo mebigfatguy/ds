@@ -82,7 +82,7 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
                 activeComponent.setPreferredSize(new Dimension(Integer.parseInt(attributes.getValue(ATTR_WIDTH)), Integer.parseInt(attributes.getValue(ATTR_HEIGHT))));
             }
         } catch (Exception e) {
-            throw new SAXException(String.format("Failure to build component: %s with attributes: %s", qName, attributes)); 
+            throw new SAXException(String.format("Failure to build component: %s with attributes: %s", qName, attributesToString(attributes))); 
         }
     }
 
@@ -151,5 +151,19 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
             } catch (Exception e2) {
             }
         }
+    }
+    
+    private String attributesToString(Attributes attributes) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        String comma = "";
+        for (int i = 0; i < attributes.getLength(); i++) {
+            sb.append(comma);
+            comma = ",";
+            sb.append(attributes.getQName(i)).append("=").append(attributes.getValue(i));
+        }
+        sb.append("}");
+        
+        return sb.toString();
     }
 }
