@@ -1,5 +1,6 @@
 package com.mebigfatguy.ds;
 
+import java.awt.Window;
 import java.io.BufferedInputStream;
 
 import org.xml.sax.InputSource;
@@ -25,7 +26,6 @@ public class DSFactory {
                 SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
                 Schema schema = schemaFactory.newSchema(source);
                 SPF.setValidating(true);
-                SPF.setNamespaceAware(true);
                 SPF.setSchema(schema);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -49,10 +49,18 @@ public class DSFactory {
             r.setErrorHandler(eh);
             r.parse(new InputSource(bis));
             
-            return ch.getView();
+            return pack(ch.getView());
             
         } catch (Exception e) {
             throw new DSException(String.format("Failed to fetch view: %s with info%n%s", name, eh), e);
         }
+    }
+    
+    private static <T extends RootPaneContainer> T pack(T t) {
+        if (t instanceof Window) {
+            ((Window) t).pack();
+        }
+        
+        return t;
     }
 }

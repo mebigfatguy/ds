@@ -3,9 +3,19 @@
     <xsd:element name="container" type="ContainerType"/>
     
     <xsd:complexType name="ContainerType">
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="container" type="ContainerType"/>
+            <xsd:element name="component" type="ComponentType"/>
+        </xsd:choice>
         <xsd:attribute name="type" type="ClassType"/>
         <xsd:attribute name="name" type="xsd:string" use="optional"/>
         <xsd:attribute name="layout" type="ClassType"/>
+    </xsd:complexType>
+    
+    <xsd:complexType name="ComponentType">
+        <xsd:attribute name="type" type="ClassType"/>
+        <xsd:attribute name="name" type="xsd:string" use="optional"/>
+        <xsd:attribute name="title" type="xsd:string" use="optional"/>
     </xsd:complexType>
     
     <xsd:simpleType name="ClassType">

@@ -19,6 +19,7 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
     private static final String CONTROL = "control";
     
     private static final String ATTR_NAME = "name";
+    private static final String ATTR_TITLE = "title";
     private static final String ATTR_TYPE = "type";
     private static final String ATTR_LAYOUT = "layout";
     
@@ -44,22 +45,23 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
             
             String name = attributes.getValue(ATTR_NAME);
             if (name != null) {
-                Method m = c.getClass().getMethod("setTitle", String.class);
-                if (m != null) {
-                    m.invoke(c, name);
-                } else {
-                    m = c.getClass().getMethod("setName", String.class);
-                    if (m != null) {
-                        m.invoke(c,  name);
-                    }
-                }
+                setName(c, name);
+            }
+            
+            String title = attributes.getValue(ATTR_TITLE);
+            if (title != null) {
+                setTitle(c, localizer.getLocalString(title));
+            }
+            
+            if (!containerStack.isEmpty()) {
+                Container parent = containerStack.get(containerStack.size() - 1);
+                parent.add(c);
             }
 
             if (qName.equals(CONTAINER)) {
                 String layout = attributes.getValue(ATTR_LAYOUT);
                 cls = Class.forName(layout);
                 ((Container) c).setLayout((LayoutManager) cls.newInstance());
-                
                 containerStack.add((Container) c);
             }
         } catch (Exception e) {
@@ -76,5 +78,32 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
 
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
+    }
+    
+    private void setName(Component c, String name) {
+        try {
+            Method m = c.getClass().getMethod("setName", String.class);
+            if (m != null) {
+                m.invoke(c,  name);
+            }
+        } catch (Exception e) {
+        }
+    }
+    
+    private void setTitle(Component c, String title) {
+        try {
+            Method m = c.getClass().getMethod("setText", String.class);
+            if (m != null) {
+                m.invoke(c,  title);
+            }
+        } catch (Exception e1) {
+            try {
+                Method m = c.getClass().getMethod("setTitle", String.class);
+                if (m != null) {
+                    m.invoke(c,  title);
+                }
+            } catch (Exception e2) {
+            }
+        }
     }
 }
