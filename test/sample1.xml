@@ -1,14 +1,17 @@
 
-<container name="main" text="Main" type="javax.swing.JFrame" layout="java.awt.BorderLayout">
+<container name="main" text="Main" type="javax.swing.JFrame">
+    <layout type="java.awt.BorderLayout"/>
     <control name="top" text="Top" type="javax.swing.JButton" position="java.awt.BorderLayout.NORTH"/>
     <container name="scroller" type="javax.swing.JScrollPane" position="java.awt.BorderLayout.CENTER">
-        <container name="innerpane" type="javax.swing.JPanel" layout="java.awt.BorderLayout">
+        <container name="innerpane" type="javax.swing.JPanel">
+            <layout type="java.awt.BorderLayout"/>
             <control name="editor" type="javax.swing.JEditorPane" position="java.awt.BorderLayout.CENTER">
                 <preferredSize width="400" height="300"/>
             </control>
         </container>
     </container>
-    <container name="right" type="javax.swing.JPanel" position="java.awt.BorderLayout.EAST" layout="java.awt.FlowLayout">
+    <container name="right" type="javax.swing.JPanel" position="java.awt.BorderLayout.EAST">
+        <layout type="java.awt.FlowLayout"/>
         <control name="fee" text="fee" type="javax.swing.JCheckBox"/>
         <control name="fi" text="fi" type="javax.swing.JCheckBox"/>
         <control name="fo" text="fo" type="javax.swing.JCheckBox"/>

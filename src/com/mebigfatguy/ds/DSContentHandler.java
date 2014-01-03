@@ -20,6 +20,7 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
 
     private static final String CONTAINER = "container";
     private static final String CONTROL = "control";
+    private static final String LAYOUT = "layout";
     private static final String PREFERRED_SIZE = "preferredSize";
     
     private static final String ATTR_NAME = "name";
@@ -46,40 +47,51 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         try {
-            if (qName.equals(CONTAINER) || qName.equals(CONTROL)) {
-                String type = attributes.getValue(ATTR_TYPE);
-                Class<?> cls = Class.forName(type);
-                activeComponent = (Component) cls.newInstance();
-                
-                String name = attributes.getValue(ATTR_NAME);
-                if (name != null) {
-                    setName(activeComponent, name);
+            switch (qName) {
+                case CONTAINER:
+                case CONTROL: {
+                    String type = attributes.getValue(ATTR_TYPE);
+                    Class<?> cls = Class.forName(type);
+                    activeComponent = (Component) cls.newInstance();
+                    
+                    String name = attributes.getValue(ATTR_NAME);
+                    if (name != null) {
+                        setName(activeComponent, name);
+                    }
+                    
+                    String text = attributes.getValue(ATTR_TEXT);
+                    if (text != null) {
+                        setText(activeComponent, localizer.getLocalString(text));
+                    }
+                    
+                    Container parent = null;
+                    if (!containerStack.isEmpty()) {
+                        parent = containerStack.get(containerStack.size() - 1);
+                    }
+        
+                    if (qName.equals(CONTAINER)) {
+                        containerStack.add((Container) activeComponent);
+                    }
+                    
+                    if (parent != null) {
+                        addChild(parent, activeComponent, attributes.getValue(ATTR_POSITION));
+                    }
                 }
+                break;
                 
-                String text = attributes.getValue(ATTR_TEXT);
-                if (text != null) {
-                    setText(activeComponent, localizer.getLocalString(text));
-                }
-                
-                Container parent = null;
-                if (!containerStack.isEmpty()) {
-                    parent = containerStack.get(containerStack.size() - 1);
-                }
-    
-                if (qName.equals(CONTAINER)) {
-                    String layout = attributes.getValue(ATTR_LAYOUT);
-                    if (layout != null) {
-                        cls = Class.forName(layout);
+                case LAYOUT: {
+                    String type = attributes.getValue(ATTR_TYPE);
+                    if (type != null) {
+                        Class<?> cls = Class.forName(type);
                         ((Container) activeComponent).setLayout((LayoutManager) cls.newInstance());
                     }
-                    containerStack.add((Container) activeComponent);
                 }
+                break;
                 
-                if (parent != null) {
-                    addChild(parent, activeComponent, attributes.getValue(ATTR_POSITION));
+                case PREFERRED_SIZE: {
+                    activeComponent.setPreferredSize(new Dimension(Integer.parseInt(attributes.getValue(ATTR_WIDTH)), Integer.parseInt(attributes.getValue(ATTR_HEIGHT))));
                 }
-            } else if (qName.equals(PREFERRED_SIZE)) {
-                activeComponent.setPreferredSize(new Dimension(Integer.parseInt(attributes.getValue(ATTR_WIDTH)), Integer.parseInt(attributes.getValue(ATTR_HEIGHT))));
+                break;
             }
         } catch (Exception e) {
             throw new SAXException(String.format("Failure to build component: %s with attributes: %s", qName, attributesToString(attributes))); 

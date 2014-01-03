@@ -4,6 +4,7 @@
     
     <xsd:complexType name="ContainerType">
         <xsd:sequence>
+            <xsd:element name="layout" type="LayoutType" minOccurs="0" maxOccurs="1"/>
             <xsd:element name="preferredSize" type="PreferredSizeType" minOccurs="0" maxOccurs="1"/>
 	        <xsd:choice minOccurs="0" maxOccurs="unbounded">
 	            <xsd:element name="container" type="ContainerType"/>
@@ -13,7 +14,6 @@
         <xsd:attribute name="type" type="ClassType"/>
         <xsd:attribute name="name" type="xsd:string" use="optional"/>
         <xsd:attribute name="text" type="xsd:string" use="optional"/>
-        <xsd:attribute name="layout" type="ClassType"/>
         <xsd:attribute name="position" type="xsd:string"/>
     </xsd:complexType>
     
@@ -27,15 +27,19 @@
         <xsd:attribute name="position" type="xsd:string"/>
     </xsd:complexType>
     
+    <xsd:complexType name="PreferredSizeType">
+        <xsd:attribute name="width" type="xsd:int"/>
+        <xsd:attribute name="height" type="xsd:int"/>
+    </xsd:complexType>
+    
+    <xsd:complexType name="LayoutType">
+        <xsd:attribute name="type" type="ClassType"/>
+    </xsd:complexType>
+        
     <xsd:simpleType name="ClassType">
         <xsd:restriction base="xsd:string">
             <xsd:pattern value="[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)*"/>
         </xsd:restriction>
     </xsd:simpleType>
-    
-    <xsd:complexType name="PreferredSizeType">
-        <xsd:attribute name="width" type="xsd:int"/>
-        <xsd:attribute name="height" type="xsd:int"/>
-    </xsd:complexType>
 
 </xsd:schema>
