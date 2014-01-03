@@ -26,7 +26,6 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
     private static final String ATTR_NAME = "name";
     private static final String ATTR_TEXT = "text";
     private static final String ATTR_TYPE = "type";
-    private static final String ATTR_LAYOUT = "layout";
     private static final String ATTR_POSITION = "position";
     private static final String ATTR_WIDTH = "width";
     private static final String ATTR_HEIGHT = "height";
