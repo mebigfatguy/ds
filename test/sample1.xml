@@ -1,6 +1,6 @@
 
-<container name="main" type="javax.swing.JFrame" layout="java.awt.BorderLayout">
-    <control name="top" title="Top" type="javax.swing.JButton" position="java.awt.BorderLayout.NORTH"/>
+<container name="main" text="Main" type="javax.swing.JFrame" layout="java.awt.BorderLayout">
+    <control name="top" text="Top" type="javax.swing.JButton" position="java.awt.BorderLayout.NORTH"/>
     <container name="scroller" type="javax.swing.JScrollPane" position="java.awt.BorderLayout.CENTER">
         <container name="innerpane" type="javax.swing.JPanel" layout="java.awt.BorderLayout">
             <control name="editor" type="javax.swing.JEditorPane" position="java.awt.BorderLayout.CENTER">
@@ -8,6 +8,6 @@
             </control>
         </container>
     </container>
-    <control name="right" title="Right" type="javax.swing.JButton" position="java.awt.BorderLayout.EAST"/>
-    <control name="bottom" title="Bottom" type="javax.swing.JButton" position="java.awt.BorderLayout.SOUTH"/>
+    <control name="right" text="Right" type="javax.swing.JButton" position="java.awt.BorderLayout.EAST"/>
+    <control name="bottom" text="Bottom" type="javax.swing.JButton" position="java.awt.BorderLayout.SOUTH"/>
 </container>

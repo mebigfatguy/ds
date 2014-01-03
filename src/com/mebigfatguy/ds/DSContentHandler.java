@@ -13,6 +13,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.swing.JScrollPane;
 import javax.swing.RootPaneContainer;
 
 public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandler {
@@ -22,7 +23,7 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
     private static final String PREFERRED_SIZE = "preferredSize";
     
     private static final String ATTR_NAME = "name";
-    private static final String ATTR_TITLE = "title";
+    private static final String ATTR_TEXT = "text";
     private static final String ATTR_TYPE = "type";
     private static final String ATTR_LAYOUT = "layout";
     private static final String ATTR_POSITION = "position";
@@ -54,9 +55,9 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
                     setName(activeComponent, name);
                 }
                 
-                String title = attributes.getValue(ATTR_TITLE);
-                if (title != null) {
-                    setTitle(activeComponent, localizer.getLocalString(title));
+                String text = attributes.getValue(ATTR_TEXT);
+                if (text != null) {
+                    setText(activeComponent, localizer.getLocalString(text));
                 }
                 
                 Container parent = null;
@@ -129,7 +130,10 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
             else if (positionObject instanceof Integer)
                 parent.add(child, ((Integer) positionObject).intValue());
         } else {
-            parent.add(child);
+            if (parent instanceof JScrollPane)
+                ((JScrollPane) parent).setViewportView(child);
+            else
+                parent.add(child);
         }
     }
     
@@ -143,17 +147,17 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
         }
     }
     
-    private void setTitle(Component c, String title) {
+    private void setText(Component c, String text) {
         try {
             Method m = c.getClass().getMethod("setText", String.class);
             if (m != null) {
-                m.invoke(c,  title);
+                m.invoke(c,  text);
             }
         } catch (Exception e1) {
             try {
                 Method m = c.getClass().getMethod("setTitle", String.class);
                 if (m != null) {
-                    m.invoke(c,  title);
+                    m.invoke(c,  text);
                 }
             } catch (Exception e2) {
             }
