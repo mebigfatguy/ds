@@ -62,8 +62,10 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
 
             if (qName.equals(CONTAINER)) {
                 String layout = attributes.getValue(ATTR_LAYOUT);
-                cls = Class.forName(layout);
-                ((Container) c).setLayout((LayoutManager) cls.newInstance());
+                if (layout != null) {
+                    cls = Class.forName(layout);
+                    ((Container) c).setLayout((LayoutManager) cls.newInstance());
+                }
                 containerStack.add((Container) c);
             }
             
