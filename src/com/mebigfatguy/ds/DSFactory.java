@@ -17,13 +17,14 @@ import javax.xml.validation.Validator;
 
 public class DSFactory {
 
+    private static final String SCHEMA_PATH = "/com/mebigfatguy/ds/ds.xsd";
     private static SAXParserFactory SPF;
     private static Schema SCHEMA;
     
     static {
         try {
             SPF = SAXParserFactory.newInstance();
-            try (InputStream xsdIs = new BufferedInputStream(DSFactory.class.getResourceAsStream("/com/mebigfatguy/ds/ds.xsd"))) {
+            try (InputStream xsdIs = new BufferedInputStream(DSFactory.class.getResourceAsStream(SCHEMA_PATH))) {
                 SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
                 SAXSource source = new SAXSource(new InputSource(xsdIs));
                 SCHEMA = schemaFactory.newSchema(source);
