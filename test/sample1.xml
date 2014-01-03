@@ -4,7 +4,7 @@
     <container name="scroller" type="javax.swing.JScrollPane" position="java.awt.BorderLayout.CENTER">
         <container name="innerpane" type="javax.swing.JPanel" layout="java.awt.BorderLayout">
             <control name="editor" type="javax.swing.JEditorPane" position="java.awt.BorderLayout.CENTER">
-                <preferredSize>400,300</preferredSize>
+                <preferredSize width="400" height="300"/>
             </control>
         </container>
     </container>

@@ -27,12 +27,13 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
     private static final String ATTR_TYPE = "type";
     private static final String ATTR_LAYOUT = "layout";
     private static final String ATTR_POSITION = "position";
+    private static final String ATTR_WIDTH = "width";
+    private static final String ATTR_HEIGHT = "height";
     
     private DSLocalizer localizer;
     private Component topComponent;
     private List<Container> containerStack = new ArrayList<>();
     private Component activeComponent = null;
-    private StringBuilder pcData = new StringBuilder();
     
     public DSContentHandler(DSLocalizer l10n) {
         localizer = l10n;
@@ -77,11 +78,11 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
                 if (parent != null) {
                     addChild(parent, activeComponent, attributes.getValue(ATTR_POSITION));
                 }
-            } else {
-                pcData.setLength(0);
+            } else if (qName.equals(PREFERRED_SIZE)) {
+                activeComponent.setPreferredSize(new Dimension(Integer.parseInt(attributes.getValue(ATTR_WIDTH)), Integer.parseInt(attributes.getValue(ATTR_HEIGHT))));
             }
         } catch (Exception e) {
-            //what to do?
+            throw new SAXException(String.format("Failure to build component: %s with attributes: %s", qName, attributes)); 
         }
     }
 
@@ -92,19 +93,7 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
             activeComponent = topComponent;
         } else if (qName.equals(CONTROL)) {
             activeComponent = containerStack.get(containerStack.size() - 1);
-        } else {
-            if (qName.equals(PREFERRED_SIZE)) {
-                String[] sizes = pcData.toString().split(",");
-                Dimension d = new Dimension(Integer.parseInt(sizes[0]), Integer.parseInt(sizes[1]));
-                activeComponent.setPreferredSize(d);
-            }
-            pcData.setLength(0);
         }
-    }
-
-    @Override
-    public void characters(char[] ch, int start, int length) throws SAXException {
-        pcData.append(ch, start, length);
     }
     
     private void addChild(Container parent, Component child, String position) {
