@@ -8,6 +8,11 @@
             </control>
         </container>
     </container>
-    <control name="right" text="Right" type="javax.swing.JButton" position="java.awt.BorderLayout.EAST"/>
+    <container name="right" type="javax.swing.JPanel" position="java.awt.BorderLayout.EAST" layout="java.awt.FlowLayout">
+        <control name="fee" text="fee" type="javax.swing.JCheckBox"/>
+        <control name="fi" text="fi" type="javax.swing.JCheckBox"/>
+        <control name="fo" text="fo" type="javax.swing.JCheckBox"/>
+        <control name="fum" text="fum" type="javax.swing.JCheckBox"/>
+    </container>
     <control name="bottom" text="Bottom" type="javax.swing.JButton" position="java.awt.BorderLayout.SOUTH"/>
 </container>
