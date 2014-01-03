@@ -2,31 +2,35 @@ package com.mebigfatguy.ds;
 
 import java.awt.Window;
 import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.text.ParseException;
 
 import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
 
 import javax.swing.RootPaneContainer;
 import javax.xml.XMLConstants;
-import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 
 public class DSFactory {
 
     private static SAXParserFactory SPF;
+    private static Schema SCHEMA;
     
     static {
         try {
             SPF = SAXParserFactory.newInstance();
-            try {
-                SAXSource source = new SAXSource(new InputSource(DSFactory.class.getResourceAsStream("/com/mebigfatguy/ds/ds.xsd")));
+            try (InputStream xsdIs = new BufferedInputStream(DSFactory.class.getResourceAsStream("/com/mebigfatguy/ds/ds.xsd"))) {
                 SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-                Schema schema = schemaFactory.newSchema(source);
+                SAXSource source = new SAXSource(new InputSource(xsdIs));
+                SCHEMA = schemaFactory.newSchema(source);
+                SPF.setSchema(SCHEMA);
                 SPF.setValidating(true);
-                SPF.setSchema(schema);
+                //SPF.setNamespaceAware(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -39,18 +43,16 @@ public class DSFactory {
         
         DSErrorHandler eh = null;
         try (BufferedInputStream bis = new BufferedInputStream(DSFactory.class.getResourceAsStream(name))) {
-            
-            SAXParser saxParser = SPF.newSAXParser();
-            XMLReader r = saxParser.getXMLReader();
-
-            DSContentHandler<T> ch = new DSContentHandler<T>(localizer);
-            r.setContentHandler(ch);
+            Validator validator = SCHEMA.newValidator();
             eh = new DSErrorHandler();
-            r.setErrorHandler(eh);
-            r.parse(new InputSource(bis));
+            validator.setErrorHandler(eh);
+            DSContentHandler<T> ch = new DSContentHandler<T>(localizer);
+            validator.validate(new SAXSource(new InputSource(bis)), new SAXResult(ch));
             
+            if (eh.hasErrors()) {
+                throw new DSException(String.format("Failed to fetch view: %s with info%n%s", name, eh));
+            }
             return pack(ch.getView());
-            
         } catch (Exception e) {
             throw new DSException(String.format("Failed to fetch view: %s with info%n%s", name, eh), e);
         }
