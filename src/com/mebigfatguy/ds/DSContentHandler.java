@@ -3,6 +3,7 @@ package com.mebigfatguy.ds;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.LayoutManager;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
     private static final String ATTR_TITLE = "title";
     private static final String ATTR_TYPE = "type";
     private static final String ATTR_LAYOUT = "layout";
+    private static final String ATTR_POSITION = "position";
     
     private DSLocalizer localizer;
     private Component topComponent;
@@ -53,9 +55,9 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
                 setTitle(c, localizer.getLocalString(title));
             }
             
+            Container parent = null;
             if (!containerStack.isEmpty()) {
-                Container parent = containerStack.get(containerStack.size() - 1);
-                parent.add(c);
+                parent = containerStack.get(containerStack.size() - 1);
             }
 
             if (qName.equals(CONTAINER)) {
@@ -63,6 +65,10 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
                 cls = Class.forName(layout);
                 ((Container) c).setLayout((LayoutManager) cls.newInstance());
                 containerStack.add((Container) c);
+            }
+            
+            if (parent != null) {
+                addChild(parent, c, attributes.getValue(ATTR_POSITION));
             }
         } catch (Exception e) {
             //what to do?
@@ -78,6 +84,33 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
 
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
+    }
+    
+    private void addChild(Container parent, Component child, String position) {
+        Object positionObject = null;
+        
+        if (position != null) {
+            int dotPos = position.lastIndexOf('.');
+            if (dotPos >= 0) {
+                try {
+                    String clsName = position.substring(0, dotPos);
+                    String fieldName = position.substring(dotPos + 1);
+                    Class<?> cls = Class.forName(clsName);
+                    Field f = cls.getField(fieldName);
+                    positionObject = f.get(null);
+                } catch (Exception e) {
+                }
+            }
+        }
+        
+        if (positionObject != null) {
+            if (positionObject instanceof String)
+                parent.add(child, positionObject);
+            else if (positionObject instanceof Integer)
+                parent.add(child, ((Integer) positionObject).intValue());
+        } else {
+            parent.add(child);
+        }
     }
     
     private void setName(Component c, String name) {

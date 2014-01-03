@@ -1,4 +1,6 @@
 
 <container name="main" type="javax.swing.JFrame" layout="java.awt.BorderLayout">
-    <control name="ok" title="ok" type="javax.swing.JButton" position="java.awt.BorderLayout.CENTER"/>
+    <control name="top" title="Top" type="javax.swing.JButton" position="java.awt.BorderLayout.NORTH"/>
+    <control name="center" title="Center" type="javax.swing.JButton" position="java.awt.BorderLayout.CENTER"/>
+    <control name="bottom" title="Bottom" type="javax.swing.JButton" position="java.awt.BorderLayout.SOUTH"/>
 </container>
