@@ -3,7 +3,6 @@ package com.mebigfatguy.ds;
 import java.awt.Window;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
-import java.text.ParseException;
 
 import org.xml.sax.InputSource;
 
