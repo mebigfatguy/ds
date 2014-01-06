@@ -25,6 +25,7 @@
         <xsd:attribute name="name" type="xsd:string" use="optional"/>
         <xsd:attribute name="text" type="xsd:string" use="optional"/>
         <xsd:attribute name="position" type="xsd:string"/>
+        <xsd:attribute name="selected" type="xsd:boolean"/>
     </xsd:complexType>
     
     <xsd:complexType name="PreferredSizeType">

@@ -29,6 +29,7 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
     private static final String ATTR_POSITION = "position";
     private static final String ATTR_WIDTH = "width";
     private static final String ATTR_HEIGHT = "height";
+    private static final String ATTR_SELECTED = "selected";
     
     private DSLocalizer localizer;
     private Component topComponent;
@@ -61,6 +62,15 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
                     String text = attributes.getValue(ATTR_TEXT);
                     if (text != null) {
                         setText(activeComponent, localizer.getLocalString(text));
+                    }
+                    
+                    String selected = attributes.getValue(ATTR_SELECTED);
+                    if (selected != null) {
+                        try {
+                            Method m = activeComponent.getClass().getMethod("setSelected", boolean.class);
+                            m.invoke(activeComponent, Boolean.parseBoolean(selected));
+                        } catch (Exception e) {
+                        }
                     }
                     
                     Container parent = null;
