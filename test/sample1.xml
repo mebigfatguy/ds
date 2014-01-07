@@ -15,7 +15,7 @@
         <control name="fee" text="fee" type="javax.swing.JCheckBox" selected="true"/>
         <control name="fi" text="fi" type="javax.swing.JCheckBox"/>
         <control name="fo" text="fo" type="javax.swing.JCheckBox"/>
-        <control name="fum" text="fum" type="javax.swing.JCheckBox"/>
+        <control name="fum" text="fum" type="javax.swing.JCheckBox" enabled="false"/>
     </container>
     <control name="bottom" text="Bottom" type="javax.swing.JButton" position="java.awt.BorderLayout.SOUTH"/>
 </container>
