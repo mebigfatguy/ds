@@ -13,8 +13,10 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.RootPaneContainer;
+import javax.swing.border.Border;
 
 public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandler {
 
@@ -22,6 +24,7 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
     private static final String CONTROL = "control";
     private static final String LAYOUT = "layout";
     private static final String PREFERRED_SIZE = "preferredSize";
+    private static final String BORDER = "border";
     
     private static final String ATTR_NAME = "name";
     private static final String ATTR_TEXT = "text";
@@ -111,6 +114,16 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
                     activeComponent.setPreferredSize(new Dimension(Integer.parseInt(attributes.getValue(ATTR_WIDTH)), Integer.parseInt(attributes.getValue(ATTR_HEIGHT))));
                 }
                 break;
+                
+                case BORDER: {
+                    if (activeComponent instanceof JComponent) {
+                        String type = attributes.getValue(ATTR_TYPE);
+                        if (type != null) {
+                            Class<? extends Border> cls = (Class<? extends Border>)Class.forName(type);
+                            ((JComponent) activeComponent).setBorder(cls.newInstance());
+                        }
+                    }
+                }
             }
         } catch (Exception e) {
             throw new SAXException(String.format("Failure to build component: %s with attributes: %s", qName, attributesToString(attributes))); 

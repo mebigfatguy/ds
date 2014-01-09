@@ -12,6 +12,7 @@
     </container>
     <container name="right" type="javax.swing.JPanel" position="java.awt.BorderLayout.EAST">
         <layout type="java.awt.FlowLayout"/>
+        <border type="javax.swing.border.EtchedBorder"/>
         <control name="fee" text="fee" type="javax.swing.JCheckBox" selected="true"/>
         <control name="fi" text="fi" type="javax.swing.JCheckBox"/>
         <control name="fo" text="fo" type="javax.swing.JCheckBox"/>
