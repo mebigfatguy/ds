@@ -35,7 +35,9 @@ public class DSFactory {
                 e.printStackTrace();
             }
         } catch (Exception e) {
-            throw new NoClassDefFoundError("Failed to initialize DSFactory's sax parser");
+            NoClassDefFoundError er = new NoClassDefFoundError("Failed to initialize DSFactory's sax parser");
+            er.initCause(e);
+            throw er;
         }
     }
     

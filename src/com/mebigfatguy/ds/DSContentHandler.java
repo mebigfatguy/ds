@@ -126,7 +126,7 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
                 }
             }
         } catch (Exception e) {
-            throw new SAXException(String.format("Failure to build component: %s with attributes: %s", qName, attributesToString(attributes))); 
+            throw new SAXException(String.format("Failure to build component: %s with attributes: %s", qName, attributesToString(attributes)), e); 
         }
     }
 
