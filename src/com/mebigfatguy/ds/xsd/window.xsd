@@ -1,4 +1,4 @@
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://mebigfatguy.com/ds/container" elementFormDefault="qualified"
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://mebigfatguy.com/ds/window" elementFormDefault="qualified"
             xmlns:comp="http://mebigfatguy.com/ds/component"
             xmlns:cont="http://mebigfatguy.com/ds/container">
             
