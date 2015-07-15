@@ -92,6 +92,9 @@
                 <include name="**/*.class"/>
                 <include name="**/*.xsd"/>
             </fileset>
+        	<fileset dir="${basedir}">
+        		<include name="META-INF/**/*"/>
+        	</fileset>
             <manifest>
                 <attribute name="ds-version" value="${ds.version}"/>
             </manifest>
