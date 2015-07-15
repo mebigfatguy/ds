@@ -1,0 +1,16 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://mebigfatguy.com/ds/abstractbutton" elementFormDefault="qualified"
+            xmlns:comp="http://mebigfatguy.com/ds/component">
+            
+	<xsd:import schemaLocation="component.xsd" namespace="http://mebigfatguy.com/ds/component"/>
+
+	<xsd:complexType name="AbstractButton">
+		<xsd:complexContent>
+			<xsd:extension base="comp:Component">
+				<xsd:sequence>
+					<xsd:element name="mnemonic" type="xsd:integer"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+</xsd:schema>
