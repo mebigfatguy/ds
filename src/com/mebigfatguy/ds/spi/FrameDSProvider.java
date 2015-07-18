@@ -19,6 +19,7 @@ package com.mebigfatguy.ds.spi;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 import org.xml.sax.ContentHandler;
 import org.xml.sax.helpers.DefaultHandler;
@@ -27,6 +28,7 @@ import com.mebigfatguy.ds.service.DSHandlerProvider;
 
 public class FrameDSProvider extends DefaultHandler implements DSHandlerProvider {
 
+	private static final String FRAME_SCHEMA_RESOURCE = "/com/mebigfatguy/ds/xsd/frame.xsd";
 	private static final URI FRAME_NAMESPACE;
 	
 	static {
@@ -40,6 +42,11 @@ public class FrameDSProvider extends DefaultHandler implements DSHandlerProvider
 	@Override
 	public URI getXSDNamespace() {
 		return FRAME_NAMESPACE;
+	}
+	
+	@Override
+	public URL getSchema() {
+		return FrameDSProvider.class.getResource(FRAME_SCHEMA_RESOURCE);
 	}
 
 	@Override

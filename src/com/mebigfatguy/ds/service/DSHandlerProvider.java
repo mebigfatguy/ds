@@ -18,12 +18,15 @@
 package com.mebigfatguy.ds.service;
 
 import java.net.URI;
+import java.net.URL;
 
 import org.xml.sax.ContentHandler;
 
 public interface DSHandlerProvider {
 	
 	URI getXSDNamespace();
+	
+	URL getSchema();
 	
 	ContentHandler getDSHandler();
 }
