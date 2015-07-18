@@ -3,9 +3,9 @@
             
 	<xsd:import schemaLocation="component.xsd" namespace="http://mebigfatguy.com/ds/component"/>
 
-	<xsd:complexType name="AbstractButton">
+	<xsd:complexType name="abstractbutton">
 		<xsd:complexContent>
-			<xsd:extension base="comp:Component">
+			<xsd:extension base="comp:component">
 				<xsd:sequence>
 					<xsd:element name="mnemonic" type="xsd:integer"/>
 				</xsd:sequence>

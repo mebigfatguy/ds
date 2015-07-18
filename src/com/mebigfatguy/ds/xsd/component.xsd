@@ -1,10 +1,10 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://mebigfatguy.com/ds/component" elementFormDefault="qualified">
 
-    <xsd:complexType name="Component">
+    <xsd:complexType name="component">
     	<xsd:sequence>
     		<xsd:element minOccurs="0" name="name" type="xsd:string"/>
-    		<xsd:element minOccurs="0" name="foreground" type="Color"/>
-    		<xsd:element minOccurs="0" name="background" type="Color"/>
+    		<xsd:element minOccurs="0" name="foreground" type="color"/>
+    		<xsd:element minOccurs="0" name="background" type="color"/>
     		<xsd:element minOccurs="0" name="font" type="xsd:string"/>
     		<xsd:element minOccurs="0" name="visible" type="xsd:boolean"/>
     		<xsd:element minOccurs="0" name="enabled" type="xsd:boolean"/>
@@ -12,7 +12,7 @@
     	</xsd:sequence>
     </xsd:complexType>
     
-    <xsd:simpleType name="Color">
+    <xsd:simpleType name="color">
     	<xsd:restriction base="xsd:string">
     		<xsd:pattern value="[0-9A-Ea-e]{6}"/>
     	</xsd:restriction>
