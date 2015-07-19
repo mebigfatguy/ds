@@ -19,9 +19,13 @@ package com.mebigfatguy.ds;
 
 import java.awt.Window;
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
-
-import org.xml.sax.InputSource;
+import java.net.URL;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 import javax.swing.RootPaneContainer;
 import javax.xml.XMLConstants;
@@ -32,22 +36,27 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
+import org.w3c.dom.ls.LSInput;
+import org.w3c.dom.ls.LSResourceResolver;
+import org.xml.sax.InputSource;
+
+import com.mebigfatguy.ds.service.DSHandlerProvider;
+
 public class DSFactory {
 
-    private static final String SCHEMA_PATH = "/com/mebigfatguy/ds/ds.xsd";
+	private static final String HANDLER_RESOURCE = "META-INF/Services/com.mebigfatguy.ds.service.DSHandlerProvider";
+	
     private static SAXParserFactory SPF;
     private static Schema SCHEMA;
     
     static {
         try {
             SPF = SAXParserFactory.newInstance();
-            try (InputStream xsdIs = new BufferedInputStream(DSFactory.class.getResourceAsStream(SCHEMA_PATH))) {
+            try {
                 SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-                SAXSource source = new SAXSource(new InputSource(xsdIs));
-                SCHEMA = schemaFactory.newSchema(source);
-                SPF.setSchema(SCHEMA);
+                SCHEMA = schemaFactory.newSchema();
                 SPF.setValidating(true);
-                //SPF.setNamespaceAware(true);
+                SPF.setNamespaceAware(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -63,6 +72,7 @@ public class DSFactory {
         DSErrorHandler eh = null;
         try (BufferedInputStream bis = new BufferedInputStream(DSFactory.class.getResourceAsStream(name))) {
             Validator validator = SCHEMA.newValidator();
+            validator.setResourceResolver(new DSResourceResolver());
             eh = new DSErrorHandler();
             validator.setErrorHandler(eh);
             DSContentHandler<T> ch = new DSContentHandler<T>(localizer);
@@ -83,5 +93,49 @@ public class DSFactory {
         }
         
         return t;
+    }
+    
+    static class DSResourceResolver implements LSResourceResolver {
+    	private static Map<String, Class<? extends DSHandlerProvider>> handlers;
+    	
+    	static {
+    		try {
+    			loadHandlers();
+    		} catch (IOException ioe) {	
+    		}
+    	}
+    	
+		@Override
+		public LSInput resolveResource(String type, String namespaceURI, String publicId, String systemId, String baseURI) {
+			try {
+				Class<? extends DSHandlerProvider> cls = handlers.get(namespaceURI);
+				if (cls != null) {
+					DSHandlerProvider p = cls.newInstance();
+					URL u = p.getSchema();
+					return new DSLSInput(u, systemId, publicId, baseURI);
+				}
+				return null;
+			} catch (IllegalAccessException | InstantiationException e) {
+				return null;
+			}
+		}
+		
+		private static void loadHandlers() throws IOException {
+			handlers = new HashMap<>();
+			Enumeration<URL> e = Thread.currentThread().getContextClassLoader().getResources(HANDLER_RESOURCE);
+			while (e.hasMoreElements()) {
+				URL u = e.nextElement();
+				try (InputStream is = new BufferedInputStream(u.openStream())) {
+					Properties p = new Properties();
+					p.load(is);
+					for (Map.Entry<?, ?> entry : p.entrySet()) {
+						Class<? extends DSHandlerProvider> handler = (Class<? extends DSHandlerProvider>) Class.forName(entry.getValue().toString());
+						handlers.put(entry.getKey().toString(), handler);
+					}
+				} catch (ClassNotFoundException cnfe) {
+					
+				}
+			}
+		}
     }
 }

@@ -9,7 +9,7 @@ public class TestViews {
 
     public static void main(String[] args) throws DSException {
         
-        JFrame f = DSFactory.<JFrame>getView("/sample1.xml", new TestLocalizer());
+        JFrame f = DSFactory.<JFrame>getView("/dssample1.xml", new TestLocalizer());
         
         f.setLocationRelativeTo(null);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
