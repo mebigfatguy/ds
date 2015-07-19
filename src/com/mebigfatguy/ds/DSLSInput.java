@@ -1,6 +1,5 @@
 package com.mebigfatguy.ds;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +27,7 @@ public class DSLSInput implements LSInput {
 	@Override
 	public Reader getCharacterStream() {
 		try {
-			return new BufferedReader(new InputStreamReader(dsResource.openStream(), StandardCharsets.UTF_16));
+			return new BufferedReader(new InputStreamReader(dsResource.openStream(), StandardCharsets.UTF_8));
 		} catch (IOException e) {
 			return null;
 		}
@@ -100,5 +99,4 @@ public class DSLSInput implements LSInput {
 	@Override
 	public void setCertifiedText(boolean certifiedText) {
 	}
-
 }
