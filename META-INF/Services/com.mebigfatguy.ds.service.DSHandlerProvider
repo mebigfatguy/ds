@@ -1,1 +1,2 @@
 http\://mebigfatguy.com/ds/frame= com.mebigfatguy.ds.spi.FrameDSProvider
+http\://mebigfatguy.com/ds/component= com.mebigfatguy.ds.spi.ComponentDSProvider
