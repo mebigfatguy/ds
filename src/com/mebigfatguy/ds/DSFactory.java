@@ -48,6 +48,8 @@ public class DSFactory {
     private static SAXParserFactory SPF;
     private static Schema SCHEMA;
     
+    private static DSResourceResolver resolver;
+    
     static {
         try {
             SPF = SAXParserFactory.newInstance();
@@ -56,6 +58,8 @@ public class DSFactory {
                 SCHEMA = schemaFactory.newSchema();
                 SPF.setValidating(true);
                 SPF.setNamespaceAware(true);
+                resolver = new DSResourceResolver();
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -71,7 +75,7 @@ public class DSFactory {
         DSErrorHandler eh = null;
         try (BufferedInputStream bis = new BufferedInputStream(DSFactory.class.getResourceAsStream(name))) {
             Validator validator = SCHEMA.newValidator();
-            validator.setResourceResolver(new DSResourceResolver());
+            validator.setResourceResolver(resolver);
             eh = new DSErrorHandler();
             validator.setErrorHandler(eh);
             DSContentHandler<T> ch = new DSContentHandler<T>(localizer);
@@ -84,6 +88,10 @@ public class DSFactory {
         } catch (Exception e) {
             throw new DSException(String.format("Failed to fetch view: %s with info%n%s", name, eh), e);
         }
+    }
+    
+    public static DSHandlerProvider getProvider(String xsdSchema) {
+    	return resolver.getProvider(xsdSchema);
     }
     
     private static <T extends RootPaneContainer> T pack(T t) {

@@ -21,7 +21,7 @@ import java.net.URL;
 
 import org.xml.sax.ContentHandler;
 
-public interface DSHandlerProvider {
+public interface DSHandlerProvider extends ContentHandler {
 	
 	String getXSDNamespace();
 	

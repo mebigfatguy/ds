@@ -58,6 +58,18 @@ public class DSResourceResolver implements LSResourceResolver {
 		}
 	}
 	
+	public DSHandlerProvider getProvider(String xsdSchema) {
+		try {
+			Class<? extends DSHandlerProvider> cls = handlers.get(xsdSchema);
+			if (cls != null) {
+				return cls.newInstance();
+			}
+			return null;
+		} catch (IllegalAccessException | InstantiationException e) {
+			return null;
+		}
+	}
+	
 	private static void loadHandlers() throws IOException {
 		handlers = new HashMap<>();
 		Enumeration<URL> e = Thread.currentThread().getContextClassLoader().getResources(HANDLER_RESOURCE);

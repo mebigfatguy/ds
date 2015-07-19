@@ -19,28 +19,26 @@ package com.mebigfatguy.ds;
 
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.LayoutManager;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JScrollPane;
+import javax.swing.RootPaneContainer;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import javax.swing.JComponent;
-import javax.swing.JScrollPane;
-import javax.swing.RootPaneContainer;
-import javax.swing.border.Border;
+import com.mebigfatguy.ds.service.DSHandlerProvider;
+
 
 public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandler {
 
     
     private DSLocalizer localizer;
     private Component topComponent;
-    private List<Container> containerStack = new ArrayList<>();
+    private List<DSHandlerProvider> providerStack = new ArrayList<>();
     private Component activeComponent = null;
     
     public DSContentHandler(DSLocalizer l10n) {
@@ -54,6 +52,9 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         try {
+        	DSHandlerProvider provider = DSFactory.getProvider(uri);
+        	providerStack.add(provider);
+        	provider.startElement(uri,  localName,  qName,  attributes);
         } catch (Exception e) {
             throw new SAXException(String.format("Failure to build component: %s with attributes: %s", qName, attributesToString(attributes)), e); 
         }
@@ -61,6 +62,15 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
+    	DSHandlerProvider provider = providerStack.get(providerStack.size() - 1);
+    	provider.endElement(uri,  localName,  qName);
+    	providerStack.remove(provider);
+    }
+    
+    @Override
+    public void characters(char[] chars, int start, int length) throws SAXException {
+    	DSHandlerProvider provider = providerStack.get(providerStack.size() - 1);
+    	provider.characters(chars,  start,  length);
     }
     
     private void addChild(Container parent, Component child, String position) {
