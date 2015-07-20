@@ -1,4 +1,4 @@
-http\://mebigfatguy.com/ds/component= com.mebigfatguy.ds.spi.ComponentDSProvider
+http\://mebigfatguy.com/ds/component=com.mebigfatguy.ds.spi.ComponentDSProvider
 http\://mebigfatguy.com/ds/container=com.mebigfatguy.ds.spi.ContainerDSProvider
-http\://mebigfatguy.com/ds/frame= com.mebigfatguy.ds.spi.FrameDSProvider
+http\://mebigfatguy.com/ds/frame=com.mebigfatguy.ds.spi.FrameDSProvider
 http\://mebigfatguy.com/ds/window=com.mebigfatguy.ds.spi.WindowDSProvider

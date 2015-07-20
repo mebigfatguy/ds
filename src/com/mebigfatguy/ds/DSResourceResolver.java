@@ -79,7 +79,7 @@ public class DSResourceResolver implements LSResourceResolver {
 				Properties p = new Properties();
 				p.load(is);
 				for (Map.Entry<?, ?> entry : p.entrySet()) {
-					Class<? extends DSHandlerProvider> handler = (Class<? extends DSHandlerProvider>) Class.forName(entry.getValue().toString());
+					Class<? extends DSHandlerProvider> handler = (Class<? extends DSHandlerProvider>) Class.forName(entry.getValue().toString().trim());
 					handlers.put(entry.getKey().toString(), handler);
 				}
 			} catch (ClassNotFoundException cnfe) {
