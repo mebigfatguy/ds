@@ -73,10 +73,11 @@ public class DSResourceResolver implements LSResourceResolver {
 	private static void loadHandlers() throws IOException {
 		handlers = new HashMap<>();
 		Enumeration<URL> e = Thread.currentThread().getContextClassLoader().getResources(HANDLER_RESOURCE);
+		Properties p = new Properties();
+
 		while (e.hasMoreElements()) {
 			URL u = e.nextElement();
 			try (InputStream is = new BufferedInputStream(u.openStream())) {
-				Properties p = new Properties();
 				p.load(is);
 				for (Map.Entry<?, ?> entry : p.entrySet()) {
 					Class<? extends DSHandlerProvider> handler = (Class<? extends DSHandlerProvider>) Class.forName(entry.getValue().toString().trim());
@@ -84,6 +85,8 @@ public class DSResourceResolver implements LSResourceResolver {
 				}
 			} catch (ClassNotFoundException cnfe) {
 				
+			} finally {
+				p.clear();
 			}
 		}
 	}
