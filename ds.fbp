@@ -1,0 +1,4 @@
+<Project projectName="ds">
+  <Jar>./target/classes</Jar>
+  <SrcDir>./src</SrcDir>
+</Project>
