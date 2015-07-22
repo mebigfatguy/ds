@@ -105,14 +105,14 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
     
     private String attributesToString(Attributes attributes) {
         StringBuilder sb = new StringBuilder();
-        sb.append("{");
+        sb.append('{');
         String comma = "";
         for (int i = 0; i < attributes.getLength(); i++) {
             sb.append(comma);
             comma = ",";
-            sb.append(attributes.getQName(i)).append("=").append(attributes.getValue(i));
+            sb.append(attributes.getQName(i)).append('=').append(attributes.getValue(i));
         }
-        sb.append("}");
+        sb.append('}');
         
         return sb.toString();
     }
