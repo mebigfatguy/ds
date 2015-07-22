@@ -17,6 +17,11 @@
  */
 package com.mebigfatguy.ds.spi;
 
+import java.awt.Component;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+
 public class ComponentDSProvider extends AbstractDSProvider {
 
 	private static final String COMPONENT_NAMESPACE = "http://com.mebigfatguy/ds/component";
@@ -24,5 +29,22 @@ public class ComponentDSProvider extends AbstractDSProvider {
 	
 	public ComponentDSProvider() {
 		super(COMPONENT_NAMESPACE, COMPONENT_SCHEMA_RESOURCE);
+	}
+
+	@Override
+	public Component getComponent() {
+		return null;
+	}
+
+	@Override
+	public void endComponent(String uri, String localName, String qName, Component comp) {
+	}
+
+	@Override
+	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+	}
+
+	@Override
+	public void endElement(String uri, String localName, String qName) throws SAXException {
 	}
 }

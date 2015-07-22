@@ -65,6 +65,15 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
     	DSHandlerProvider provider = providerStack.get(providerStack.size() - 1);
     	provider.endElement(uri,  localName,  qName);
     	providerStack.remove(provider);
+    	
+    	Component c = provider.getComponent();
+    	if (c != null) {
+    		if (providerStack.size() == 0) {
+    			topComponent = c;
+    		} else {
+    			providerStack.get(providerStack.size() - 1).endComponent(uri, localName, qName, c);
+    		}
+    	}
     }
     
     @Override

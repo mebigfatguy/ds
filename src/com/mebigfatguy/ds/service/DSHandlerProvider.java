@@ -17,6 +17,7 @@
  */
 package com.mebigfatguy.ds.service;
 
+import java.awt.Component;
 import java.net.URL;
 
 import org.xml.sax.ContentHandler;
@@ -28,4 +29,8 @@ public interface DSHandlerProvider extends ContentHandler {
 	URL getSchema();
 	
 	ContentHandler getDSHandler();
+	
+	Component getComponent();
+	
+	void endComponent(String uri, String localName, String qName, Component comp);
 }

@@ -17,12 +17,43 @@
  */
 package com.mebigfatguy.ds.spi;
 
+import java.awt.Component;
+
+import javax.swing.JFrame;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+
 public class FrameDSProvider extends AbstractDSProvider {
 
 	private static final String FRAME_NAMESPACE = "http://com.mebigfatguy/ds/frame";
 	private static final String FRAME_SCHEMA_RESOURCE = "/com/mebigfatguy/ds/xsd/frame.xsd";
 	
+	private JFrame frame;
+	
 	public FrameDSProvider() {
 		super(FRAME_NAMESPACE, FRAME_SCHEMA_RESOURCE);
 	}
+
+	@Override
+	public Component getComponent() {
+		return frame;
+	}
+	
+	@Override
+	public void endComponent(String uri, String localName, String qName, Component comp) {
+	}
+
+	@Override
+	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+		if ("frame".equals(localName)) {
+			frame = new JFrame();
+		}
+	}
+
+	@Override
+	public void endElement(String uri, String localName, String qName) throws SAXException {
+	}
+	
+	
 }
