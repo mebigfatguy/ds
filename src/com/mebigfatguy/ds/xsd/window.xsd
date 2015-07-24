@@ -5,9 +5,9 @@
 	<xsd:import schemaLocation="component.xsd" namespace="http://mebigfatguy.com/ds/component"/>
 	<xsd:import schemaLocation="container.xsd" namespace="http://mebigfatguy.com/ds/container"/>
 
-	<xsd:complexType name="window">
+	<xsd:complexType name="Window">
 		<xsd:complexContent>
-			<xsd:extension base="cont:container">
+			<xsd:extension base="cont:Container">
 				<xsd:sequence>
 					<xsd:element minOccurs="0" name="alwaysOnTop" type="xsd:boolean"/>
 				</xsd:sequence>

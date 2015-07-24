@@ -7,9 +7,9 @@
 	<xsd:import schemaLocation="container.xsd" namespace="http://mebigfatguy.com/ds/container"/>
 	<xsd:import schemaLocation="window.xsd" namespace="http://mebigfatguy.com/ds/window"/>
 
-	<xsd:complexType name="frame">
+	<xsd:complexType name="Frame">
 		<xsd:complexContent>
-			<xsd:extension base="win:window">
+			<xsd:extension base="win:Window">
 				<xsd:sequence>
 				</xsd:sequence>
 			</xsd:extension>
