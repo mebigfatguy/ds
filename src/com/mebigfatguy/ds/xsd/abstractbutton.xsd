@@ -7,7 +7,7 @@
 		<xsd:complexContent>
 			<xsd:extension base="comp:Component">
 				<xsd:sequence>
-					<xsd:element name="mnemonic" type="xsd:integer"/>
+					<xsd:element minOccurs="0" name="mnemonic" type="xsd:integer"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>

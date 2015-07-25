@@ -20,7 +20,7 @@
 	
 	<xsd:complexType name="NamedComponent">
 		<xsd:sequence>
-			<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+			<xsd:element name="name" type="xsd:string"/>
 			<xsd:element name="component" type="comp:Component"/>
 		</xsd:sequence>
 	</xsd:complexType>

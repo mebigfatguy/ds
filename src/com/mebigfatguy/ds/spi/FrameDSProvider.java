@@ -60,6 +60,10 @@ public class FrameDSProvider extends AbstractDSProvider {
 			break;
 		}
 	}
+	
+	@Override
+	public void endChildComponent(String uri, String localName, String qName, Component childComponent) {
+	}
 
 	@Override
 	public void content(String content) {

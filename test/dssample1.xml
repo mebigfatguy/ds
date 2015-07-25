@@ -1,5 +1,14 @@
-<fr:frame xmlns:fr="http://mebigfatguy.com/ds/frame" 
-          xmlns:comp="http://mebigfatguy.com/ds/component">
+<fr:frame xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		  xmlns:fr="http://mebigfatguy.com/ds/frame" 
+          xmlns:comp="http://mebigfatguy.com/ds/component"
+          xmlns:cont="http://mebigfatguy.com/ds/container"
+          xmlns:b="http://mebigfatguy.com/ds/button">
  	<comp:preferredSize>500,300</comp:preferredSize>
+ 	<cont:childComponent>
+ 		<cont:name>CENTER</cont:name>
+ 		<cont:component xsi:type="b:Button">
+ 			<comp:name>Click Me</comp:name>
+ 		</cont:component>
+ 	</cont:childComponent>
     <fr:title>Example</fr:title>
 </fr:frame>
