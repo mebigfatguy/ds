@@ -19,50 +19,36 @@ package com.mebigfatguy.ds.spi;
 
 import java.awt.Component;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import org.xml.sax.Attributes;
 
-public class FrameDSProvider extends AbstractDSProvider {
+public class ButtonDSProvider extends AbstractDSProvider {
+	
+	private static final String BUTTON_NAMESPACE = "http://com.mebigfatguy/ds/button";
+	private static final String BUTTON_SCHEMA_RESOURCE = "/com/mebigfatguy/ds/xsd/button.xsd";
+	
+	private static final String BUTTON = "button";
 
-	private static final String FRAME_NAMESPACE = "http://mebigfatguy.com/ds/frame";
-	private static final String FRAME_SCHEMA_RESOURCE = "/com/mebigfatguy/ds/xsd/frame.xsd";
+	JButton button;
 	
-	private static final String FRAME = "frame";
-	private static final String TITLE = "title";
-	
-	private JFrame frame;
-	private String contents;
-	
-	public FrameDSProvider() {
-		super(FRAME_NAMESPACE, FRAME_SCHEMA_RESOURCE);
+	public ButtonDSProvider() {
+		super(BUTTON_NAMESPACE, BUTTON_SCHEMA_RESOURCE);
 	}
+	
 
 	@Override
 	public Component getComponent() {
-		return frame;
+		return button;
 	}
 	
 	@Override
 	public void startComponent(String uri, String localName, String qName, Attributes attributes, Component activeComponent) {
 		switch (localName) {
-			case FRAME:
-				frame = new JFrame();
+			case BUTTON:
+				button = new JButton();
 			break;
 		}
-	}
-
-	@Override
-	public void endComponent(String uri, String localName, String qName, Component activeComponent) {
-		switch (localName) {		
-			case TITLE:
-				frame.setTitle(contents);
-			break;
-		}
-	}
-
-	@Override
-	public void content(String content) {
-		contents = content;
 	}
 }
