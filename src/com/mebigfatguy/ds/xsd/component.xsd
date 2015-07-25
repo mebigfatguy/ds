@@ -6,6 +6,7 @@
     		<xsd:element minOccurs="0" name="name" type="xsd:string"/>
     		<xsd:element minOccurs="0" name="foreground" type="comp:Color"/>
     		<xsd:element minOccurs="0" name="background" type="comp:Color"/>
+    		<xsd:element minOccurs="0" name="preferredSize" type="comp:Size"/>
     		<xsd:element minOccurs="0" name="font" type="xsd:string"/>
     		<xsd:element minOccurs="0" name="visible" type="xsd:boolean"/>
     		<xsd:element minOccurs="0" name="enabled" type="xsd:boolean"/>
@@ -16,6 +17,12 @@
     <xsd:simpleType name="Color">
     	<xsd:restriction base="xsd:string">
     		<xsd:pattern value="[0-9A-Ea-e]{6}"/>
+    	</xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:simpleType name="Size">
+    	<xsd:restriction base="xsd:string">
+    		<xsd:pattern value="\d+\s*,\s*\d+"/>
     	</xsd:restriction>
     </xsd:simpleType>
 
