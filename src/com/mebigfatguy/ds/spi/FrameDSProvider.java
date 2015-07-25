@@ -22,14 +22,18 @@ import java.awt.Component;
 import javax.swing.JFrame;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 
 public class FrameDSProvider extends AbstractDSProvider {
 
-	private static final String FRAME_NAMESPACE = "http://com.mebigfatguy/ds/frame";
+	private static final String FRAME_NAMESPACE = "http://mebigfatguy.com/ds/frame";
 	private static final String FRAME_SCHEMA_RESOURCE = "/com/mebigfatguy/ds/xsd/frame.xsd";
 	
+	private static final String FRAME = "frame";
+	private static final String TITLE = "title";
+	
 	private JFrame frame;
+	private String contents;
+	private boolean inFrame;
 	
 	public FrameDSProvider() {
 		super(FRAME_NAMESPACE, FRAME_SCHEMA_RESOURCE);
@@ -37,13 +41,33 @@ public class FrameDSProvider extends AbstractDSProvider {
 
 	@Override
 	public Component getComponent() {
-		return frame;
+		return inFrame ? frame : null;
 	}
 	
 	@Override
 	public void startComponent(String uri, String localName, String qName, Attributes attributes, Component activeComponent) {
-		if ("frame".equals(localName)) {
-			frame = new JFrame();
+		inFrame = false;
+		switch (localName) {
+			case FRAME:
+				frame = new JFrame();
+				inFrame = true;
+			break;
 		}
 	}
+
+	@Override
+	public void endComponent(String uri, String localName, String qName, Component activeComponent) {
+		switch (localName) {		
+			case TITLE:
+				frame.setTitle(contents);
+			break;
+		}
+	}
+
+	@Override
+	public void content(String content) {
+		contents = content;
+	}
+	
+	
 }

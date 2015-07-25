@@ -52,8 +52,13 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         try {
-        	DSHandlerProvider provider = DSFactory.getProvider(uri);
-        	providerStack.add(provider);
+        	DSHandlerProvider provider = getTopProvider();
+        	if ((provider == null) || (!provider.getXSDNamespace().equals(uri))) {
+        		provider = DSFactory.getProvider(uri);
+        		providerStack.add(provider);
+        	} else {
+        		providerStack.add(provider);
+        	}
         	provider.startComponent(uri,  localName,  qName,  attributes, getTopComponent());
         	Component c = provider.getComponent();
         	if (c != null) {
@@ -90,6 +95,14 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
     	}
     	
     	return componentStack.get(componentStack.size() - 1);
+    }
+    
+    private DSHandlerProvider getTopProvider() {
+    	if (providerStack.isEmpty()) {
+    		return null;
+    	}
+    	
+    	return providerStack.get(providerStack.size() - 1);
     }
     
     private String attributesToString(Attributes attributes) {

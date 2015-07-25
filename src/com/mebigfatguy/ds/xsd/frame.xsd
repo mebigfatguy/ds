@@ -12,6 +12,7 @@
 		<xsd:complexContent>
 			<xsd:extension base="win:Window">
 				<xsd:sequence>
+					<xsd:element name="title" type="xsd:string"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>

@@ -1,5 +1,5 @@
 <fr:frame xmlns:fr="http://mebigfatguy.com/ds/frame" 
           xmlns:comp="http://mebigfatguy.com/ds/component">
-    <comp:name>Example</comp:name>
-	<comp:preferredSize>500,300</comp:preferredSize>
+ 	<comp:preferredSize>500,300</comp:preferredSize>
+    <fr:title>Example</fr:title>
 </fr:frame>
