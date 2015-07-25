@@ -20,17 +20,22 @@ package com.mebigfatguy.ds.service;
 import java.awt.Component;
 import java.net.URL;
 
+import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 
-public interface DSHandlerProvider extends ContentHandler {
+public interface DSHandlerProvider {
 	
 	String getXSDNamespace();
 	
 	URL getSchema();
 	
-	ContentHandler getDSHandler();
-	
 	Component getComponent();
 	
-	void endComponent(String uri, String localName, String qName, Component comp);
+	void startComponent(String uri, String localName, String qName, Attributes atts, Component activeComponent);
+	
+	void endComponent(String uri, String localName, String qName, Component activeComponent);
+	
+	void endChildComponent(String uri, String localName, String qName, Component childComponent);
+	
+	void content(String content);
 }

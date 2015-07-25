@@ -17,14 +17,16 @@
  */
 package com.mebigfatguy.ds.spi;
 
+import java.awt.Component;
 import java.net.URL;
 
+import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.mebigfatguy.ds.service.DSHandlerProvider;
 
-public abstract class AbstractDSProvider extends DefaultHandler implements DSHandlerProvider {
+public abstract class AbstractDSProvider implements DSHandlerProvider {
 
 	private String xsdDSNamespace;
 	private String xsdDSResource;
@@ -45,7 +47,25 @@ public abstract class AbstractDSProvider extends DefaultHandler implements DSHan
 	}
 
 	@Override
-	public ContentHandler getDSHandler() {
-		return this;
+	public Component getComponent() {
+		return null;
 	}
+
+	@Override
+	public void startComponent(String uri, String localName, String qName, Attributes atts, Component activeComponent) {
+	}
+
+	@Override
+	public void endComponent(String uri, String localName, String qName, Component activeComponent) {
+	}
+	
+	@Override
+	public void endChildComponent(String uri, String localName, String qName, Component childComponent) {
+	}
+
+	@Override
+	public void content(String content) {
+	}
+	
+	
 }

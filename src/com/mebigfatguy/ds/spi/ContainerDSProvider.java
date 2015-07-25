@@ -17,11 +17,6 @@
  */
 package com.mebigfatguy.ds.spi;
 
-import java.awt.Component;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-
 public class ContainerDSProvider extends AbstractDSProvider {
 
 	private static final String CONTAINER_NAMESPACE = "http://com.mebigfatguy/ds/container";
@@ -29,22 +24,5 @@ public class ContainerDSProvider extends AbstractDSProvider {
 	
 	public ContainerDSProvider() {
 		super(CONTAINER_NAMESPACE, CONTAINER_SCHEMA_RESOURCE);
-	}
-	
-	@Override
-	public Component getComponent() {
-		return null;
-	}
-	
-	@Override
-	public void endComponent(String uri, String localName, String qName, Component comp) {
-	}
-
-	@Override
-	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-	}
-
-	@Override
-	public void endElement(String uri, String localName, String qName) throws SAXException {
 	}
 }

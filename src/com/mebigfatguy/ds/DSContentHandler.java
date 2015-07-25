@@ -39,13 +39,14 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
     private DSLocalizer localizer;
     private List<DSHandlerProvider> providerStack = new ArrayList<>();
     private List<Component> componentStack = new ArrayList<>();
+    StringBuilder contents = new StringBuilder();
     
     public DSContentHandler(DSLocalizer l10n) {
         localizer = l10n;
     }
     
     public T getView() {
-        return (T)componentStack.get(componentStack.size() - 1);
+        return (T)getTopComponent();
     }
 
     @Override
@@ -53,11 +54,13 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
         try {
         	DSHandlerProvider provider = DSFactory.getProvider(uri);
         	providerStack.add(provider);
-        	provider.startElement(uri,  localName,  qName,  attributes);
+        	provider.startComponent(uri,  localName,  qName,  attributes, getTopComponent());
         	Component c = provider.getComponent();
         	if (c != null) {
         		componentStack.add(c);
         	}
+        	
+        	contents.setLength(0);
         } catch (Exception e) {
             throw new SAXException(String.format("Failure to build component: %s with attributes: %s", qName, attributesToString(attributes)), e); 
         }
@@ -66,25 +69,27 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
     	DSHandlerProvider provider = providerStack.get(providerStack.size() - 1);
-    	provider.endElement(uri,  localName,  qName);
-    	providerStack.remove(provider);
+    	provider.content(contents.toString());
+    	provider.endComponent(uri,  localName,  qName, getTopComponent());
+    	providerStack.remove(provider);    	
+    	Component childComponent = provider.getComponent();
     	
-    	if (!providerStack.isEmpty()) {
-	    	Component pc = provider.getComponent();
-	    	if ((pc != null) && !componentStack.isEmpty()) {
-	    		Component c = componentStack.remove(componentStack.size() - 1);
-	    		/* reference comparison */
-	    		if (pc == c) {
-	    			providerStack.get(providerStack.size() - 1).endComponent(uri,  localName,  qName,  c);
-	    		}
-	    	}
+    	if (childComponent != null) {
+    		provider.endChildComponent(uri, localName, qName, childComponent);
     	}
     }
 
     @Override
     public void characters(char[] chars, int start, int length) throws SAXException {
-    	DSHandlerProvider provider = providerStack.get(providerStack.size() - 1);
-    	provider.characters(chars,  start,  length);
+    	contents.append(chars, start, length);
+    }
+    
+    private Component getTopComponent() {
+    	if (componentStack.isEmpty()) {
+    		return null;
+    	}
+    	
+    	return componentStack.get(componentStack.size() - 1);
     }
     
     private String attributesToString(Attributes attributes) {

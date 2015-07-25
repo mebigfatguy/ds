@@ -41,19 +41,9 @@ public class FrameDSProvider extends AbstractDSProvider {
 	}
 	
 	@Override
-	public void endComponent(String uri, String localName, String qName, Component comp) {
-	}
-
-	@Override
-	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+	public void startComponent(String uri, String localName, String qName, Attributes attributes, Component activeComponent) {
 		if ("frame".equals(localName)) {
 			frame = new JFrame();
 		}
 	}
-
-	@Override
-	public void endElement(String uri, String localName, String qName) throws SAXException {
-	}
-	
-	
 }
