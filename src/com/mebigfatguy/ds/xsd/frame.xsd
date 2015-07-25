@@ -1,7 +1,8 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://mebigfatguy.com/ds/frame" elementFormDefault="qualified"
             xmlns:comp="http://mebigfatguy.com/ds/component"
             xmlns:cont="http://mebigfatguy.com/ds/container"
-            xmlns:win="http://mebigfatguy.com/ds/window">
+            xmlns:win="http://mebigfatguy.com/ds/window"
+            xmlns:fr="http://mebigfatguy.com/ds/frame">
             
 	<xsd:import schemaLocation="component.xsd" namespace="http://mebigfatguy.com/ds/component"/>
 	<xsd:import schemaLocation="container.xsd" namespace="http://mebigfatguy.com/ds/container"/>
@@ -15,5 +16,7 @@
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
+	
+	<xsd:element name="frame" type="fr:Frame"/>
 	
 </xsd:schema>
