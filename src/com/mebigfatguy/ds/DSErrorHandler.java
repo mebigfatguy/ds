@@ -17,6 +17,9 @@
  */
 package com.mebigfatguy.ds;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -27,19 +30,31 @@ public class DSErrorHandler implements ErrorHandler {
     private boolean hasErrors = false;
     
     @Override
-    public void warning(SAXParseException exception) throws SAXException {
-        error.append(exception.getMessage()).append("\n");
+    public void warning(SAXParseException exception) {
+    	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    	PrintStream ps = new PrintStream(baos);
+    	exception.printStackTrace(ps);
+    	
+    	error.append("Warning:\n").append(new String(baos.toByteArray())).append("\n");
     }
 
     @Override
-    public void error(SAXParseException exception) throws SAXException {
-        error.append(exception.getMessage()).append("\n");
+    public void error(SAXParseException exception) {
+    	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    	PrintStream ps = new PrintStream(baos);
+    	exception.printStackTrace(ps);
+    	
+    	error.append("Error:\n").append(new String(baos.toByteArray())).append("\n");
         hasErrors = true;
     }
 
     @Override
-    public void fatalError(SAXParseException exception) throws SAXException {
-        error.append(exception.getMessage()).append("\n");
+    public void fatalError(SAXParseException exception) {
+    	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    	PrintStream ps = new PrintStream(baos);
+    	exception.printStackTrace(ps);
+    	
+    	error.append("Fatal Error:\n").append(new String(baos.toByteArray())).append("\n");
         hasErrors = true;
     }
     
