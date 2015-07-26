@@ -44,7 +44,6 @@ import com.mebigfatguy.ds.service.DSHandlerProvider;
 
 public class DSFactory {
 
-	public static final String XSI_URI = "http://www.w3.org/2001/XMLSchema-instance";
 	public static final String XSI_TYPE = "type";
 	
     private static SAXParserFactory SPF;

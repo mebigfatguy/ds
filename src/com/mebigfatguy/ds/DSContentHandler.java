@@ -18,13 +18,11 @@
 package com.mebigfatguy.ds;
 
 import java.awt.Component;
-import java.awt.Container;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JScrollPane;
 import javax.swing.RootPaneContainer;
+import javax.xml.XMLConstants;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -54,7 +52,7 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
         try {
         	DSHandlerProvider provider = getTopProvider();
         	if ((provider == null) || (!provider.getXSDNamespace().equals(uri))) {
-        		provider = DSFactory.getProvider(uri, attributes.getValue(DSFactory.XSI_URI, DSFactory.XSI_TYPE));
+        		provider = DSFactory.getProvider(uri, attributes.getValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, DSFactory.XSI_TYPE));
         		providerStack.add(provider);
         	} else {
         		providerStack.add(provider);
