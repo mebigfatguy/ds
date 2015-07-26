@@ -44,6 +44,8 @@ import com.mebigfatguy.ds.service.DSHandlerProvider;
 
 public class DSFactory {
 
+	public static final String XSI_URI = "http://www.w3.org/2001/XMLSchema-instance";
+	public static final String XSI_TYPE = "type";
 	
     private static SAXParserFactory SPF;
     private static Schema SCHEMA;
@@ -90,7 +92,7 @@ public class DSFactory {
         }
     }
     
-    public static DSHandlerProvider getProvider(String xsdSchema) {
+    public static DSHandlerProvider getProvider(String xsdSchema, String subTypeQName) {
     	return resolver.getProvider(xsdSchema);
     }
     

@@ -54,7 +54,7 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
         try {
         	DSHandlerProvider provider = getTopProvider();
         	if ((provider == null) || (!provider.getXSDNamespace().equals(uri))) {
-        		provider = DSFactory.getProvider(uri);
+        		provider = DSFactory.getProvider(uri, attributes.getValue(DSFactory.XSI_URI, DSFactory.XSI_TYPE));
         		providerStack.add(provider);
         	} else {
         		providerStack.add(provider);
