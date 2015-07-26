@@ -91,14 +91,17 @@ public class DSContentHandler<T extends RootPaneContainer> extends DefaultHandle
 
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
-		DSHandlerProvider provider = providerStack.get(providerStack.size() - 1);
+		DSHandlerProvider provider = getTopProvider();
 		provider.content(contents.toString());
 		provider.endComponent(uri, localName, qName, getTopComponent());
 		providerStack.remove(provider);
 		Component childComponent = provider.getComponent();
 
 		if (childComponent != null) {
-			provider.endChildComponent(uri, localName, qName, childComponent);
+			provider = getTopProvider();
+			if (provider != null) {
+				provider.endChildComponent(uri, localName, qName, childComponent);
+			}
 		}
 	}
 
