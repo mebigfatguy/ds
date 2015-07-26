@@ -91,7 +91,7 @@ public class DSFactory {
         }
     }
     
-    public static DSHandlerProvider getProvider(String xsdSchema, String subTypeQName) {
+    public static DSHandlerProvider getProvider(String xsdSchema) {
     	return resolver.getProvider(xsdSchema);
     }
     
