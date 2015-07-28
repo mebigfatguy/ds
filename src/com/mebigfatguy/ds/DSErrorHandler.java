@@ -18,52 +18,65 @@
 package com.mebigfatguy.ds;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 
 import org.xml.sax.ErrorHandler;
-import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 public class DSErrorHandler implements ErrorHandler {
 
-    private StringBuilder error = new StringBuilder();
-    private boolean hasErrors = false;
-    
-    @Override
-    public void warning(SAXParseException exception) {
-    	ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    	PrintStream ps = new PrintStream(baos);
-    	exception.printStackTrace(ps);
-    	
-    	error.append("Warning:\n").append(new String(baos.toByteArray())).append("\n");
-    }
+	private StringBuilder error = new StringBuilder();
+	private boolean hasErrors = false;
 
-    @Override
-    public void error(SAXParseException exception) {
-    	ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    	PrintStream ps = new PrintStream(baos);
-    	exception.printStackTrace(ps);
-    	
-    	error.append("Error:\n").append(new String(baos.toByteArray())).append("\n");
-        hasErrors = true;
-    }
+	@Override
+	public void warning(SAXParseException exception) {
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream(); PrintStream ps = new PrintStream(baos, false, StandardCharsets.UTF_8.name())) {
 
-    @Override
-    public void fatalError(SAXParseException exception) {
-    	ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    	PrintStream ps = new PrintStream(baos);
-    	exception.printStackTrace(ps);
-    	
-    	error.append("Fatal Error:\n").append(new String(baos.toByteArray())).append("\n");
-        hasErrors = true;
-    }
-    
-    public boolean hasErrors() {
-        return hasErrors;
-    }
-    @Override
-    public String toString() {
-        return error.toString();
-    }
+			exception.printStackTrace(ps);
+			ps.flush();
+
+			error.append("Warning:\n").append(new String(baos.toByteArray(), StandardCharsets.UTF_8)).append("\n");
+		} catch (IOException e) {
+			// won't happen
+		}
+	}
+
+	@Override
+	public void error(SAXParseException exception) {
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream(); PrintStream ps = new PrintStream(baos, false, StandardCharsets.UTF_8.name())) {
+
+			exception.printStackTrace(ps);
+			ps.flush();
+
+			error.append("Error:\n").append(new String(baos.toByteArray(), StandardCharsets.UTF_8)).append("\n");
+			hasErrors = true;
+		} catch (IOException e) {
+			// won't happen
+		}
+	}
+
+	@Override
+	public void fatalError(SAXParseException exception) {
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream(); PrintStream ps = new PrintStream(baos)) {
+
+			exception.printStackTrace(ps);
+
+			error.append("Fatal Error:\n").append(new String(baos.toByteArray())).append("\n");
+			hasErrors = true;
+		} catch (IOException e) {
+			// won't happen
+		}
+	}
+
+	public boolean hasErrors() {
+		return hasErrors;
+	}
+
+	@Override
+	public String toString() {
+		return error.toString();
+	}
 
 }
