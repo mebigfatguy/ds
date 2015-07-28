@@ -16,6 +16,8 @@
 	</xsd:complexType>
 	
 	<xsd:complexType name="LayoutManager">
+		<xsd:sequence>
+		</xsd:sequence>
 	</xsd:complexType>
 	
 	<xsd:complexType name="NamedComponent">
@@ -23,6 +25,17 @@
 			<xsd:element name="name" type="xsd:string"/>
 			<xsd:element name="component" type="comp:Component"/>
 		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="BorderLayout">
+		<xsd:complexContent>
+			<xsd:extension base="cont:LayoutManager">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="hGap" type="xsd:integer"/>
+					<xsd:element minOccurs="0" name="vGap" type="xsd:integer"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
 	</xsd:complexType>
 
 </xsd:schema>

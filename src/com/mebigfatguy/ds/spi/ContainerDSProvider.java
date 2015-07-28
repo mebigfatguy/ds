@@ -17,12 +17,26 @@
  */
 package com.mebigfatguy.ds.spi;
 
+import java.awt.Component;
+
 public class ContainerDSProvider extends AbstractDSProvider {
 
 	private static final String CONTAINER_NAMESPACE = "http://com.mebigfatguy/ds/container";
 	private static final String CONTAINER_SCHEMA_RESOURCE = "/com/mebigfatguy/ds/xsd/container.xsd";
-	
+
+	private static final String LAYOUT_MANAGER = "layoutManager";
+	private static final String NAME = "name";
+	private static final String CHILD_COMPONENT = "childComponent";
+
 	public ContainerDSProvider() {
 		super(CONTAINER_NAMESPACE, CONTAINER_SCHEMA_RESOURCE);
+	}
+
+	@Override
+	public void endComponent(String uri, String localName, String qName, Component activeComponent) {
+		switch (localName) {
+		case LAYOUT_MANAGER:
+			break;
+		}
 	}
 }

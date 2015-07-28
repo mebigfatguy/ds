@@ -4,6 +4,7 @@
           xmlns:cont="http://mebigfatguy.com/ds/container"
           xmlns:b="http://mebigfatguy.com/ds/button">
  	<comp:preferredSize>500,300</comp:preferredSize>
+ 	<cont:layoutManager xsi:type="cont:BorderLayout"/>
  	<cont:childComponent>
  		<cont:name>CENTER</cont:name>
  		<cont:component xsi:type="b:Button">
