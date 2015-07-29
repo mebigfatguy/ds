@@ -27,13 +27,13 @@ public class FrameDSProvider extends AbstractDSProvider {
 
 	private static final String FRAME_NAMESPACE = "http://mebigfatguy.com/ds/frame";
 	private static final String FRAME_SCHEMA_RESOURCE = "/com/mebigfatguy/ds/xsd/frame.xsd";
-	
+
 	private static final String FRAME = "frame";
 	private static final String TITLE = "title";
-	
+
 	private JFrame frame;
 	private String contents;
-	
+
 	public FrameDSProvider() {
 		super(FRAME_NAMESPACE, FRAME_SCHEMA_RESOURCE);
 	}
@@ -42,27 +42,23 @@ public class FrameDSProvider extends AbstractDSProvider {
 	public Component getComponent() {
 		return frame;
 	}
-	
+
 	@Override
 	public void startComponent(String uri, String localName, String qName, Attributes attributes, Component activeComponent) {
 		switch (localName) {
-			case FRAME:
-				frame = new JFrame();
+		case FRAME:
+			frame = new JFrame();
 			break;
 		}
 	}
 
 	@Override
 	public void endComponent(String uri, String localName, String qName, Component activeComponent) {
-		switch (localName) {		
-			case TITLE:
-				frame.setTitle(contents);
+		switch (localName) {
+		case TITLE:
+			frame.setTitle(contents);
 			break;
 		}
-	}
-	
-	@Override
-	public void endChildComponent(String uri, String localName, String qName, Component childComponent) {
 	}
 
 	@Override
