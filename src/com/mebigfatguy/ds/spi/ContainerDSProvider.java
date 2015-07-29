@@ -17,7 +17,16 @@
  */
 package com.mebigfatguy.ds.spi;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Container;
+import java.awt.LayoutManager;
+
+import javax.xml.XMLConstants;
+
+import org.xml.sax.Attributes;
+
+import com.mebigfatguy.ds.DSFactory;
 
 public class ContainerDSProvider extends AbstractDSProvider {
 
@@ -25,17 +34,44 @@ public class ContainerDSProvider extends AbstractDSProvider {
 	private static final String CONTAINER_SCHEMA_RESOURCE = "/com/mebigfatguy/ds/xsd/container.xsd";
 
 	private static final String LAYOUT_MANAGER = "layoutManager";
+
+	private static final String BORDER_LAYOUT = "BorderLayout";
+
 	private static final String NAME = "name";
 	private static final String CHILD_COMPONENT = "childComponent";
+
+	private String layoutType;
 
 	public ContainerDSProvider() {
 		super(CONTAINER_NAMESPACE, CONTAINER_SCHEMA_RESOURCE);
 	}
 
 	@Override
+	public void startComponent(String uri, String localName, String qName, Attributes attributes, Component activeComponent) {
+		layoutType = attributes.getValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, DSFactory.XSI_TYPE);
+		String[] parts = layoutType.split(":");
+		if (parts.length < 2) {
+			layoutType = null;
+		} else {
+			layoutType = parts[1];
+		}
+	}
+
+	@Override
 	public void endComponent(String uri, String localName, String qName, Component activeComponent) {
 		switch (localName) {
+
 		case LAYOUT_MANAGER:
+			LayoutManager l = null;
+			switch (layoutType) {
+			case BORDER_LAYOUT:
+				l = new BorderLayout();
+				break;
+			}
+
+			if (l != null) {
+				((Container) activeComponent).setLayout(l);
+			}
 			break;
 		}
 	}
