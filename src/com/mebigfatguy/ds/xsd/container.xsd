@@ -37,5 +37,21 @@
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
+	
+	<xsd:complexType name="BoxLayout">
+		<xsd:complexContent>
+			<xsd:extension base="cont:LayoutManager">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="axis" type="cont:Axis"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:simpleType name="Axis">
+		<xsd:restriction base="xsd:string>
+			<xsd:pattern value="X_AXIS|Y_AXIS"/>
+		</xsd:restriction>
+	</xsd:simpleType>
 
 </xsd:schema>
