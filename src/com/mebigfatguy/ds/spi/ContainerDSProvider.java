@@ -22,6 +22,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.LayoutManager;
 
+import javax.swing.BoxLayout;
 import javax.xml.XMLConstants;
 
 import org.xml.sax.Attributes;
@@ -36,6 +37,7 @@ public class ContainerDSProvider extends AbstractDSProvider {
 	private static final String LAYOUT_MANAGER = "layoutManager";
 
 	private static final String BORDER_LAYOUT = "BorderLayout";
+	private static final String BOX_LAYOUT = "BoxLayout";
 
 	private static final String NAME = "name";
 	private static final String CHILD_COMPONENT = "childComponent";
@@ -66,6 +68,9 @@ public class ContainerDSProvider extends AbstractDSProvider {
 			switch (layoutType) {
 			case BORDER_LAYOUT:
 				l = new BorderLayout();
+				break;
+			case BOX_LAYOUT:
+				l = new BoxLayout((Container) activeComponent, BoxLayout.X_AXIS);
 				break;
 			}
 
