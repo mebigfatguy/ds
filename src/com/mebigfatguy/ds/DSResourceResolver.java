@@ -35,14 +35,14 @@ public class DSResourceResolver implements LSResourceResolver {
 	private static final String HANDLER_RESOURCE = "META-INF/Services/com.mebigfatguy.ds.service.DSHandlerProvider";
 
 	private static Map<String, Class<? extends DSHandlerProvider>> handlers;
-	
+
 	static {
 		try {
 			loadHandlers();
-		} catch (IOException ioe) {	
+		} catch (IOException ioe) {
 		}
 	}
-	
+
 	@Override
 	public LSInput resolveResource(String type, String namespaceURI, String publicId, String systemId, String baseURI) {
 		try {
@@ -57,7 +57,7 @@ public class DSResourceResolver implements LSResourceResolver {
 			return null;
 		}
 	}
-	
+
 	public DSHandlerProvider getProvider(String xsdSchema) {
 		try {
 			Class<? extends DSHandlerProvider> cls = handlers.get(xsdSchema);
@@ -69,7 +69,7 @@ public class DSResourceResolver implements LSResourceResolver {
 			return null;
 		}
 	}
-	
+
 	private static void loadHandlers() throws IOException {
 		handlers = new HashMap<>();
 		Enumeration<URL> e = Thread.currentThread().getContextClassLoader().getResources(HANDLER_RESOURCE);
@@ -81,10 +81,10 @@ public class DSResourceResolver implements LSResourceResolver {
 				p.load(is);
 				for (Map.Entry<?, ?> entry : p.entrySet()) {
 					Class<? extends DSHandlerProvider> handler = (Class<? extends DSHandlerProvider>) Class.forName(entry.getValue().toString().trim());
-					handlers.put(entry.getKey().toString(), handler);
+					handlers.put((String) entry.getKey(), handler);
 				}
 			} catch (ClassNotFoundException cnfe) {
-				
+
 			} finally {
 				p.clear();
 			}
