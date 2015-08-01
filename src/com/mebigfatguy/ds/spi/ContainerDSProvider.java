@@ -50,8 +50,7 @@ public class ContainerDSProvider extends AbstractDSProvider {
 
 	@Override
 	public void startComponent(String uri, String localName, String qName, Attributes attributes, Component activeComponent) {
-		layoutType = attributes.getValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, DSFactory.XSI_TYPE);
-		String[] parts = layoutType.split(":");
+		String[] parts = attributes.getValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, DSFactory.XSI_TYPE).split(":");
 		if (parts.length < 2) {
 			layoutType = null;
 		} else {
